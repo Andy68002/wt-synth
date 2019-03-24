@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-c -Wall
-LDFLAGS=
+CFLAGS=-g -c -Wall -Werror 
+LDFLAGS=-g 
 SOURCES= synthesis.c synthesisTest.c
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=synth
@@ -8,10 +8,10 @@ EXECUTABLE=synth
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) -lrt
 
-.cpp.o:
+.c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	rm *o synth
+	rm *.o synth
