@@ -3,12 +3,16 @@ Synthesis test code
 */
 #include <stdio.h>
 #include "synthesis.h"
-int* a;
-int* b;
-int* c;
-
+//initialize arrays for frequency, attenuation, and enable
+int32_t tuning[NUM_NOTES];
+int32_t attenuate[NUM_NOTES];
+bool enable[NUM_NOTES];
+}
 int main() {
-	DDS(a, b, c);
-	getchar();
+	//initialize the memory for the lookup table
+	int32_t *LUT = malloc(SAMPLE_WIDTH * WAVETABLE_LENGTH);
+	DDS(tuning, attenuate, enable, LUT);
+
+	free(LUT);
 	return 0;
 }
