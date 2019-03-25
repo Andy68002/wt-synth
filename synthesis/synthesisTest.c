@@ -9,6 +9,5 @@ int* c;
 
 int main() {
 	DDS(a, b, c);
-	getchar();
 	return 0;
 }
