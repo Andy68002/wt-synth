@@ -10,8 +10,8 @@
 #define SAMPLE_RATE      22656
 #define ONE_SECOND_NS    1000000000
 #define NUM_NOTES        6
-#define SAMPLE_WIDTH     (1)
-#define WAVETABLE_LENGTH (48)
+#define SAMPLE_WIDTH     (1)  // number of bytes
+#define WAVETABLE_LENGTH (48) // Length
 #define TRUE             1
 #define FALSE            0
 
