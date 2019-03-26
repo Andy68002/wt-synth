@@ -27,6 +27,7 @@ void* synthesis_thread(void *args) {
 }
 
 int main() {
+<<<<<<< HEAD
 	// initialize arrays for frequency, attenuation, and enable
 	unsigned short tuning[NUM_NOTES];
 	unsigned short attenuate[NUM_NOTES];
@@ -58,5 +59,8 @@ int main() {
 //	DDS(tuning, attenuate, enable, LUT);
 	while(1);
 	free(LUT);
+=======
+	DDS(a, b, c);
+>>>>>>> 30fb87cf3a3874d15c56782e45a40419cda22b4a
 	return 0;
 }
