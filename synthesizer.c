@@ -41,7 +41,9 @@ int main() {
 
 	LUT_File = fopen("wavetable_sine.bin", "rb"); // open file stream
 	//TODO: Add error handling for wave file read
+
 	fread(LUT, SAMPLE_WIDTH, WAVETABLE_LENGTH, LUT_File);
+
 	//1. initialize audio
 	//2. open USB in its own pthread
 	//3. begin loop, waiting for callback function to signal continue
@@ -57,7 +59,9 @@ int main() {
 	      }
 	 */
 
-	printf("%04X\n", LUT[0x5DD8D3]);
+	for(int i = 0; i < WAVETABLE_LENGTH; i+=1024) {
+		printf("%i, %i\n",i,  LUT[i]);
+	}
 	free(LUT);
 	return 0;
 }
