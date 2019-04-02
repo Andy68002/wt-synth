@@ -20,7 +20,6 @@ void init_DDS(short *LUT) {
 		samples[i] = 0;
 	}
 	wavetable = LUT;
-	printf("LUT 0xA4: %X\n", wavetable[720]);
 }
 
 void DDS(void *data){
@@ -34,11 +33,15 @@ void DDS(void *data){
 			accumulators[j]+=dds_data.tuning_word[j];
 			accumulators[j] = (accumulators[j] > WAVETABLE_LENGTH) ?
 			                  accumulators[j]-=WAVETABLE_LENGTH : accumulators[j];
-			currentSample += wavetable[accumulators[j]] * (dds_data.enable[j]);
-			printf("%i", j);
+			if(dds_data.enable[j]) {
+				//if note is enabled, currentSample += wavetable lookup
+				//bitwise anded with attenuation factor
+				currentSample += wavetable[accumulators[j]] / dds_data.attenuate[j];
+			}
 		}
 		samples[i] = currentSample;
-		printf("sample %i: %i\n", i, samples[i]);
+		//printf("sample %i: %i\n", i, samples[i]);
+		printf("%i\n", samples[i]);
 	}
 
 } /* DDS */

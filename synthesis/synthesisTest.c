@@ -44,10 +44,11 @@ int main() {
 
 	fread(LUT, SAMPLE_WIDTH, WAVETABLE_LENGTH, LUT_File);
 
-	usb_buffer1 = (USB_synthesizer_data){.tuning_word = {90, 90, 90, 3, 4, 5},
-		                             .attenuate = {65535, 65535, 32767, 9, 10, 11},
-		                             .enable = {1, 1, 1, 1, 1, 1}};
+	usb_buffer1 = (USB_synthesizer_data){.tuning_word = {10000, 20000, 25000, 32767, 4, 5},
+		                             .attenuate = {2, 65535/2, 32767, 9, 10, 11},
+		                             .enable = {1, 0, 0, 0, 0, 0}};
 	init_DDS(LUT);
+	int testCount = 0;
 	while (1) {
 		if(filter_next_period_flag) {
 			filter_next_period_flag = FALSE;
@@ -55,8 +56,10 @@ int main() {
 		}
 		if(calculate_next_period_flag) {
 			DDS(USB_synthesis_data_pointer);
-			calculate_next_period_flag = FALSE;
+			//calculate_next_period_flag = FALSE;
+			testCount++;
 		}
+		if(testCount >= 250) break;
 	}
 
 	free(LUT);
