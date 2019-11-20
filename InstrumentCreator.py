@@ -5,6 +5,14 @@ from scipy.io import wavfile
 import sys
 from pydub import AudioSegment
 
+
+
+numberofharmonics=8
+midivalue=48
+
+
+
+
 sound = AudioSegment.from_wav("audio.wav")
 sound = sound.set_channels(1)
 sound.export("audio_mono.wav", format="wav")
@@ -19,6 +27,9 @@ sound.export("audio_mono.wav", format="wav")
 #plt.title("Signal Wave...")
 #plt.plot(signal)
 #plt.show()
+
+
+
 
 
 fs, data = wavfile.read('audio_mono.wav')
@@ -37,8 +48,8 @@ yf = scipy.fftpack.fft(y)
 xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
 
 
-#fig, ax = plt.subplots()
-#ax.plot(xf, 2.0/N * np.abs(yf[:N//2]))
+fig, ax = plt.subplots()
+ax.plot(xf, 2.0/N * np.abs(yf[:N//2]))
 
 plt.show()
 dat =2.0/N * np.abs(yf[:N//2])
@@ -51,7 +62,7 @@ datsort.sort()
 
 
 harm = np.empty(datsort.shape, dtype=np.longdouble)
-harmonics = np.empty(6, dtype=np.longdouble)
+harmonics = np.empty(numberofharmonics, dtype=np.longdouble)
 n=0
 while(n<N/2):
     itemindex = np.where(dat==datsort[-(1+n)])
@@ -60,7 +71,7 @@ while(n<N/2):
 
 n=0
 c=0
-while(n<6):
+while(n<8):
     i=c
     while(i!=-1):
         if(10<abs(harm[c]-harm[i-1])):
@@ -77,15 +88,15 @@ while(n<6):
         
    
 harmonics.sort()
-amplitudes = np.empty(6, dtype=np.longdouble)
+amplitudes = np.empty(numberofharmonics, dtype=np.longdouble)
 n=0
-while(n<6):
+while(n<numberofharmonics):
     itemindex = np.where(xf==harmonics[n])
     amplitudes[n]=dat[itemindex]
     n=n+1
 n=0
-while(n<6):
-    if((max(amplitudes)*.01)>amplitudes[n]):
+while(n<numberofharmonics):
+    if((max(amplitudes)*.02)>amplitudes[n]):
         amplitudes[n]=0
         harmonics[n]=0
     n=n+1
@@ -93,32 +104,50 @@ while(n<6):
 
 
 n=0
-ampnorm=[amplitudes[0],amplitudes[1],amplitudes[2],amplitudes[3],amplitudes[4],amplitudes[5]]
 
-while(n<6):
+ampnorm = np.empty(numberofharmonics, dtype=np.longdouble)
+ampnorm=amplitudes.copy()
+
+while(n<numberofharmonics):
     ampnorm[n]=amplitudes[n]/max(amplitudes)
     n=n+1
-    
-if(ampnorm[0]==0):
-    ampnorm.sort(reverse=True)
-    
+
+
 
 
 n=0
-harmnorm=[harmonics[0],harmonics[1],harmonics[2],harmonics[3],harmonics[4],harmonics[5]]
 
-while(n<6):
+harmnorm = np.empty(numberofharmonics, dtype=np.longdouble)
+harmnorm=harmonics.copy()
+
+while(n<numberofharmonics):
     harmnorm[n]=harmonics[n]/(np.min(harmonics[np.nonzero(harmonics)]))
     n=n+1
 
-if(harmnorm[0]==0):
-    harmnorm.sort(reverse=True)
+n=0
+
+ampnorm_temp = np.empty(numberofharmonics, dtype=np.longdouble)
+ampnorm_temp=ampnorm.copy()
+
+harmnorm_temp = np.empty(numberofharmonics, dtype=np.longdouble)
+harmnorm_temp=harmnorm.copy()
+
+while(n<numberofharmonics):
+    i=0
+    if(ampnorm[n]==0):
+        while(i<numberofharmonics-1):
+            ampnorm[i]=ampnorm_temp[1+i]
+            harmnorm[i]=harmnorm_temp[1+i]
+            i=i+1
+        ampnorm[i]=0
+        harmnorm[i]=0
+    n=n+1
 
 
 print('{\n  "sampled_instrument": {')
 print('      "attenuationvector": 1,')
-print('      "num_harmonics": 6,')
-print('      "midiValue": 48,')   
+print('      "num_harmonics":',numberofharmonics,end=',\n')
+print('      "midiValue":',midivalue,end=',\n')   
 print('      "harmonic_multiples": [')
 print('      ',',\n       '.join(map(str, harmnorm))) 
 #print('      ]\n    }\n  ]\n}')
@@ -130,6 +159,8 @@ print('    ]\n  }\n}')
 
 print('\n\nPress ENTER to End')
 input()
+
+
 
 
 
