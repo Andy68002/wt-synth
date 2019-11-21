@@ -15,7 +15,18 @@ import time
 import io
 import signal
 from rtmidi.midiutil import open_midiinput
-signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+from mido import MidiFile
+
+#signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+
+
+#mid = MidiFile('song.mid')
+#for i, track in enumerate(mid.tracks):
+#    print('Track {}: {}'.format(i, track.name))
+#    for msg in track:
+#        print(msg)
+
+
 
 log = logging.getLogger('midiin_poll')
 logging.basicConfig(level=logging.DEBUG)
@@ -34,12 +45,23 @@ print("Entering main loop of python")
 
 try:
     timer = time.time()
+    player_piano_flag = 0
     while True:
             msg = midiin.get_message()
             if msg:
                 message, deltatime = msg
                 timer += deltatime
                 print(str(message))
+                if(message[1] == 105):
+                    #player_piano_flag = 1
+                    #print("made it")
+                    for msg in MidiFile('song.mid'):
+                        time.sleep(msg.time)
+                        if not msg.is_meta:
+                            if(msg.type == 'note_on'):
+                                print ('[144,', msg.note, ',', msg.velocity, ']')
+                            elif (msg.type == 'note_off'):
+                                print ('[128,', msg.note, ',', msg.velocity, ']')
                 sys.stdout.flush()
             time.sleep(0.01)
 except KeyboardInterrupt:
