@@ -176,8 +176,7 @@ print('    ]\n  }\n}')
 
 
 
-#print('\n\nPress ENTER to End')
-#input()
+
 
 wave=0
 n=0
@@ -198,7 +197,8 @@ wave=wave.astype('int16')
 scipy.io.wavfile.write('audio_samle.wav',fs,wave)
 
 
-
+print('\n\nPress ENTER to End')
+input()
 
 
 
