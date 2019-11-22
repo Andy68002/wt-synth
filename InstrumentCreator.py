@@ -3,13 +3,15 @@ import matplotlib.pyplot as plt
 import scipy.fftpack
 from scipy.io import wavfile
 import sys
+import wave
 from pydub import AudioSegment
 
 
 
 numberofharmonics=8
 midivalue=48
-
+fundamental=100
+amplitude=30000 #Too high will cause clipping!
 
 
 
@@ -19,7 +21,7 @@ sound.export("audio_mono.wav", format="wav")
 
 #spf = wave.open("audio_mono.wav", "r")
 
-## Extract Raw Audio from Wav File
+#Extract Raw Audio from Wav File
 #signal = spf.readframes(-1)
 #signal = np.fromstring(signal, "Int16")
 
@@ -32,13 +34,22 @@ sound.export("audio_mono.wav", format="wav")
 
 
 
-fs, data = wavfile.read('audio_mono.wav')
+fs, data = scipy.io.wavfile.read('audio_mono.wav')
 
 
 # Number of samplepoints
-N = 22050
+N = len(data)
+if (N % 2) == 0:
+    N=N
+else:
+    N=N-1
+
+
+
+
+
 # sample spacing
-T = 1.0 / 4410
+T = 1.0 / fs
 x = np.linspace(0.0, T*N, N)
 
 y = data
@@ -48,10 +59,11 @@ yf = scipy.fftpack.fft(y)
 xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
 
 
-#fig, ax = plt.subplots()
-#ax.plot(xf, 2.0/N * np.abs(yf[:N//2]))
-
+fig, ax = plt.subplots()
+ax.plot(xf, 2.0/N * np.abs(yf[:N//2]))
 plt.show()
+
+
 dat =2.0/N * np.abs(yf[:N//2])
 datsort=2.0/N * np.abs(yf[:N//2])
 datsort.sort()
@@ -70,21 +82,21 @@ while(n<N/2):
     n=n+1
 
 n=0
-c=0
-while(n<8):
-    i=c
-    while(i!=-1):
-        if(10<abs(harm[c]-harm[i-1])):
-            i=i-1
+co=0
+while(n<numberofharmonics):
+    io=co
+    while((io!=-1 and co<N/2-1)):
+        if(10<abs(harm[co]-harm[io-1])):
+            io=io-1
         else:
-            c=c+1
-            i=c
-        if(harm[c]==0):
-            c=c+1
-            i=c
-        harmonics[n]=harm[c]
+            co=co+1
+            io=co
+        if(harm[co]==0):
+            co=co+1
+            io=co
+        harmonics[n]=harm[co]
     n=n+1
-    c=c+1
+    co=co+1
         
    
 harmonics.sort()
@@ -92,6 +104,9 @@ amplitudes = np.empty(numberofharmonics, dtype=np.longdouble)
 n=0
 while(n<numberofharmonics):
     itemindex = np.where(xf==harmonics[n])
+    while((len(itemindex[0])==0 and n<numberofharmonics)):
+        n=n+1
+        itemindex = np.where(xf==harmonics[n])  
     amplitudes[n]=dat[itemindex]
     n=n+1
 n=0
@@ -134,13 +149,17 @@ harmnorm_temp=harmnorm.copy()
 
 while(n<numberofharmonics):
     i=0
-    if(ampnorm[n]==0):
+    ampnorm_temp=ampnorm.copy()
+    harmnorm_temp=harmnorm.copy()
+    if(ampnorm[0]==0):
         while(i<numberofharmonics-1):
             ampnorm[i]=ampnorm_temp[1+i]
             harmnorm[i]=harmnorm_temp[1+i]
             i=i+1
         ampnorm[i]=0
         harmnorm[i]=0
+        
+    
     n=n+1
 
 
@@ -157,9 +176,26 @@ print('    ]\n  }\n}')
 
 
 
-print('\n\nPress ENTER to End')
-input()
+#print('\n\nPress ENTER to End')
+#input()
 
+wave=0
+n=0
+ratio=np.count_nonzero(ampnorm)
+while(n<numberofharmonics):
+    wave=(((amplitude/ratio)*ampnorm[n])*np.sin(harmnorm[n]*fundamental*2*np.pi*x))+wave
+    n=n+1
+
+#fig, ax = plt.subplots()
+#ax.plot(x,wave)
+#plt.show()
+
+
+wave=wave.astype('int16')
+
+
+
+scipy.io.wavfile.write('audio_samle.wav',fs,wave)
 
 
 
