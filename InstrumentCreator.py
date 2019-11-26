@@ -10,8 +10,9 @@ from pydub import AudioSegment
 
 numberofharmonics=8
 midivalue=48
-fundamental=100
+fundamental=440
 amplitude=30000 #Too high will cause clipping!
+fundamental_playback=fundamental #Changing this will alter the frequency of the sample wave. Set to 'fundamental' as default
 
 
 
@@ -120,6 +121,7 @@ while(n<numberofharmonics):
 
 n=0
 
+
 ampnorm = np.empty(numberofharmonics, dtype=np.longdouble)
 ampnorm=amplitudes.copy()
 
@@ -132,11 +134,12 @@ while(n<numberofharmonics):
 
 n=0
 
+TrueFundamental=min(harmonics, key=lambda x:abs(x-fundamental))
 harmnorm = np.empty(numberofharmonics, dtype=np.longdouble)
 harmnorm=harmonics.copy()
 
 while(n<numberofharmonics):
-    harmnorm[n]=harmonics[n]/(np.min(harmonics[np.nonzero(harmonics)]))
+    harmnorm[n]=harmonics[n]/TrueFundamental
     n=n+1
 
 n=0
@@ -182,7 +185,7 @@ wave=0
 n=0
 ratio=np.count_nonzero(ampnorm)
 while(n<numberofharmonics):
-    wave=(((amplitude/ratio)*ampnorm[n])*np.sin(harmnorm[n]*fundamental*2*np.pi*x))+wave
+    wave=(((amplitude/ratio)*ampnorm[n])*np.sin(harmnorm[n]*fundamental_playback*2*np.pi*x))+wave
     n=n+1
 
 #fig, ax = plt.subplots()
@@ -199,19 +202,6 @@ scipy.io.wavfile.write('audio_samle.wav',fs,wave)
 
 print('\n\nPress ENTER to End')
 input()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
