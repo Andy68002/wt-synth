@@ -1,4 +1,5 @@
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.fftpack
@@ -11,11 +12,13 @@ from pydub import AudioSegment
 
 numberofharmonics=8
 midivalue=48
-fundamental=440
+fundamental=220
 amplitude=30000 #Too high will cause clipping!
 fundamental_playback=fundamental #Changing this will alter the frequency of the sample wave. Set to 'fundamental' as default
 amplitude_cutoff=.02 #any amplitude that is lower than cutoff*max_amplitude is filtered out
 harmonic_cutoff=10 #any harmonic within cutoff hertz of another is skipped
+frequencies_below_harmonic=0 #0 is no, 1 is yes
+
 
 
 sound = AudioSegment.from_wav("audio.wav")
@@ -84,8 +87,10 @@ while(n<N/2):
     harm[n]=xf[itemindex]
     n=n+1
 
+
 n=0
 co=0
+TrueFundamental1=min(harm, key=lambda x:abs(x-fundamental))
 while(n<numberofharmonics):
     io=co
     while((io!=-1 and co<N/2-1)):
@@ -95,6 +100,9 @@ while(n<numberofharmonics):
             co=co+1
             io=co
         if(harm[co]==0):
+            co=co+1
+            io=co
+        if(harm[co]<TrueFundamental1 and frequencies_below_harmonic==0):
             co=co+1
             io=co
         harmonics[n]=harm[co]
@@ -204,6 +212,8 @@ scipy.io.wavfile.write('audio_sample.wav',fs,wave)
 
 print('\n\nPress ENTER to End')
 input()
+
+
 
 
 
