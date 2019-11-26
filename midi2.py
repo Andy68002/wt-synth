@@ -45,6 +45,7 @@ print("Entering main loop of python")
 
 try:
     timer = time.time()
+    timer2 = time.time()
     player_piano_flag = 0
     while True:
             msg = midiin.get_message()
@@ -56,7 +57,17 @@ try:
                     #player_piano_flag = 1
                     #print("made it")
                     for msg in MidiFile('song.mid'):
-                        time.sleep(msg.time)
+                        timeout = time.time() + msg.time
+                        while True:
+                            if time.time() > timeout:
+                                break
+                            msg2 = midiin.get_message()
+                             if msg2:
+                                message2, deltatime2 = msg2
+                                timer2 += deltatime2
+                                print(str(message2))
+                                sys.stdout.flush()
+                             time.sleep(0.01) 
                         if not msg.is_meta:
                             if(msg.type == 'note_on'):
                                 print ('[144, ' + str(msg.note) + ', ' + str(msg.velocity) + ']')
