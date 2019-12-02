@@ -29,7 +29,7 @@
       "num_harmonics1": 8,
       "midiValue": 50,
       "harmonic_multiples1": [
-        1.0
+        1.0,
         2.0,
         3.0,
         4.0,
