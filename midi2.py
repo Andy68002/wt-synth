@@ -58,10 +58,9 @@ try:
                         time.sleep(msg.time)
                         msg2 = midiin.get_message()
                         if msg2:
-                            message, deltatime = msg2if(message[1] == 106):
-                            break
-                        else:
-                            print(str(message))
+                            message, deltatime = msg2
+                            if(message[1] == 106):
+                                break
                         if not msg.is_meta:
                             if(msg.type == 'note_on'):
                                 print ('[144, ' + str(msg.note) + ', ' + str(msg.velocity) + ']')
