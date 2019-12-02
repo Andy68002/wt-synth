@@ -88,7 +88,7 @@ void DDS(void *DDS_data_array, void *USB_data_array, int numHarmonics, short *wa
                         tempSample += wavetable[accumulators[current_accumulator]] * dds_data[current_accumulator].attenuate;
                     }
                 }
-                tempSample = (int)((float)tempSample * attenuation_multiple) >> 1;
+                tempSample = (int)((float)tempSample * attenuation_multiple) >> 3;
                 currentSample = currentSample + tempSample;
             }
         }
