@@ -48,9 +48,9 @@ void *usb(void *args)
 	}
 
 	envelope_array[0].sustain_level = 1.0;
-	envelope_array[0].sustain_speed = 1.0;
+	envelope_array[0].sustain_speed = 0.0;
 	envelope_array[0].sustain_level = 0.0;
-	envelope_array[0].release_speed = 0.000005;
+	envelope_array[0].release_speed = 0.0005;
 	//The default instrument is 0
 	*currentInstrument = instrumentArray[1];
 	*envelope = envelope_array[1];

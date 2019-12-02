@@ -139,7 +139,7 @@
         0.036781828845936775
       ]
   },
-  "square": {
+  "Square": {
     "attenuationvector1": 0,
     "num_harmonics1": 4,
     "midValue": 60,
@@ -154,6 +154,29 @@
       0.333,
       0.2,
       0.1428
+    ]
+  },
+  "Sawtooth": {
+    "attenuationvector1": 0,
+    "num_harmonics1": 7,
+    "midValue": 62,
+    "harmonic_multiples1": [
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0
+    ],
+    "harmonic_attenuate1": [
+      0.6366,
+      -0.3183,
+      0.2122,
+      -0.1592,
+      0.1273,
+      -0.1061,
+      0.0909
     ]
   },
   "sine": {
