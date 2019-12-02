@@ -50,7 +50,7 @@
       ]
   },
   "3 Harmonics": {
-      "attenuationvector1": 1,
+      "attenuationvector1": 0,
       "num_harmonics1": 3,
       "midiValue": 52,
       "harmonic_multiples1": [
@@ -65,7 +65,7 @@
       ]
   },
   "Cello (Maybe)": {
-      "attenuationvector1": 1,
+      "attenuationvector1": 0,
       "num_harmonics1": 8,
       "midiValue": 54,
       "harmonic_multiples1": [
@@ -89,60 +89,10 @@
         0.06434589002771769
       ]
   },
-  "Cello open string": {
-      "attenuationvector1": 1,
-      "num_harmonics1": 8,
-      "midiValue": 56,
-      "harmonic_multiples1": [
-        1.0,
-        2.0,
-        3.0,
-        4.0,
-        5.0,
-        6.0,
-        7.0,
-        8.0
-      ],
-      "harmonic_attenuate1": [
-        0.5,
-        0.25,
-        0.055,
-        0.2,
-        0.11,
-        0.15,
-        0.215,
-        0.2
-      ]
-  },
-  "Cello closed string": {
-      "attenuationvector1": 1,
-      "num_harmonics1": 8,
-      "midiValue": 58,
-      "harmonic_multiples1": [
-        1.0,
-        2.0,
-        3.0,
-        4.0,
-        5.0,
-        6.0,
-        7.0,
-        8.0
-      ],
-      "harmonic_attenuate1": [
-        0.5,
-        0.25,
-        0.035,
-        0.175,
-        0.045,
-        0.045,
-        0.05,
-        0.05
-      ]
-  },
   "Clarinet (Maybe)": {
       "attenuationvector1": 1,
       "num_harmonics1": 8,
-      "midiValue": 60,
+      "midiValue": 56,
       "harmonic_multiples1": [
         0.008968609865470852,
         1.0,
@@ -167,7 +117,7 @@
   "Flute": {
       "attenuationvector1": 1,
       "num_harmonics1": 8,
-      "midiValue": 62,
+      "midiValue": 58,
       "harmonic_multiples1": [
         0.0031645569620253164,
         1.0,
@@ -188,6 +138,23 @@
         0.03998030358584438,
         0.036781828845936775
       ]
+  },
+  "square": {
+    "attenuationvector1": 0,
+    "num_harmonics1": 4,
+    "midValue": 60,
+    "harmonic_multiples1": [
+      1.0,
+      3.0,
+      5.0,
+      7.0
+    ],
+    "harmonic_attenuate1": [
+      1.0,
+      0.333,
+      0.2,
+      0.1428
+    ]
   },
   "sine": {
       "attenuationvector1": 1,

@@ -51,7 +51,6 @@ try:
             if msg:
                 message, deltatime = msg
                 timer += deltatime
-                print(str(message))
                 if(message[1] == 105):
                     #player_piano_flag = 1
                     #print("made it")
@@ -62,7 +61,10 @@ try:
                                 print ('[144, ' + str(msg.note) + ', ' + str(msg.velocity) + ']')
                             elif (msg.type == 'note_off'):
                                 print ('[128, ' + str(msg.note) + ', ' + str(msg.velocity) + ']')
+                        time.sleep(0.005)
                         sys.stdout.flush()
+                else:
+                    print(str(message))
                 sys.stdout.flush()
             time.sleep(0.01)
 except KeyboardInterrupt:

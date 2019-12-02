@@ -16,7 +16,7 @@ int tuning_lookup[] = {
 
 int note_buffer[TOTAL_NUMBER_FREQUENCIES];
 int note_buffer_ptr = 0;
-int config_note = 0;
+int config_note = 28;
 int config_note_pressed = 0;
 
 void *usb(void *args)
@@ -35,19 +35,24 @@ void *usb(void *args)
 	//For now, have all of the initialized to the same default
 	for(int i = 0; i < 3; i++)
 	{
-		envelope_array[i].A_cutoff = 1000;
-		envelope_array[i].D_cutoff = envelope_array[i].A_cutoff + 1000;
-		envelope_array[i].S_cutoff = envelope_array[i].D_cutoff + 82000;
-		envelope_array[i].R_cutoff = envelope_array[i].D_cutoff + 8000;
+		envelope_array[i].attack_level = 1.0;
+		envelope_array[i].attack_speed = 0.005;
 
-		envelope_array[i].sustain_level = 0.9;
+		envelope_array[i].decay_level = 1.0;
+		envelope_array[i].decay_speed = 0;
 
-		envelope_array[i].A_lerp_mult = 1.0 / envelope_array[i].A_cutoff;
-		envelope_array[i].D_lerp_mult = 1.0 / (envelope_array[i].D_cutoff - envelope_array[i].A_cutoff);
-		envelope_array[i].R_lerp_mult = 1.0 / (envelope_array[i].R_cutoff - envelope_array[i].S_cutoff);
+		envelope_array[i].sustain_level = 0.005;
+		envelope_array[i].sustain_speed = 0.000007;
+
+		envelope_array[i].release_speed = 0.00009;
 	}
+
+	envelope_array[0].sustain_level = 1.0;
+	envelope_array[0].sustain_speed = 1.0;
+	envelope_array[0].sustain_level = 0.0;
+	envelope_array[0].release_speed = 0.000005;
 	//The default instrument is 0
-	*currentInstrument = instrumentArray[0];
+	*currentInstrument = instrumentArray[1];
 	*envelope = envelope_array[1];
 	printf("Current instrument: %s\n", currentInstrument->name);
 	//The current number of notes being played
@@ -175,7 +180,7 @@ void *usb(void *args)
 				USB_data[oldestNote].attenuation_vector = 0;
 				USB_data[oldestNote].age = numNotesBeingPlayed;
 				USB_data[oldestNote].state = A;
-				USB_data[oldestNote].current_attenuation = 1.0;
+				USB_data[oldestNote].current_attenuation = 0.0;
 				for (int k = 0; k < TOTAL_NUMBER_NOTES; k++)
 				{
 					if (k != slot)
@@ -193,7 +198,7 @@ void *usb(void *args)
 				USB_data[openNoteSlot].attenuation_vector = 0;
 				USB_data[openNoteSlot].age = ++numNotesBeingPlayed;
 				USB_data[openNoteSlot].state = A;
-				USB_data[openNoteSlot].current_attenuation = 1.0;
+				USB_data[openNoteSlot].current_attenuation = 0.0;
 			}
 			//printf("SLOT NUMBER %i\n", slot);
 			//printf("NUM CURRENT NOTES: %i\n", numNotesBeingPlayed);
@@ -210,7 +215,7 @@ void *usb(void *args)
 				//printf("BUCKET LOCATION: %i, TUNING WORD: %i\n", i, data[i].tuning_word);
 			}
 
-			if (key_int == config_note)
+			if (key_int == config_note || key_int == 0)
 			{
 				//Maybe trying to enter config mode. Increment the config mode key counter.
 				if (config_note_pressed < 4)
