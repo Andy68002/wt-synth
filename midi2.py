@@ -56,12 +56,18 @@ try:
                     #print("made it")
                     for msg in MidiFile('song.mid'):
                         time.sleep(msg.time)
+                        msg2 = midiin.get_message()
+                        if msg2:
+                            message, deltatime = msg2if(message[1] == 106):
+                            break
+                        else:
+                            print(str(message))
                         if not msg.is_meta:
                             if(msg.type == 'note_on'):
                                 print ('[144, ' + str(msg.note) + ', ' + str(msg.velocity) + ']')
                             elif (msg.type == 'note_off'):
                                 print ('[128, ' + str(msg.note) + ', ' + str(msg.velocity) + ']')
-                        time.sleep(0.005)
+                        time.sleep(0.001)
                         sys.stdout.flush()
                 else:
                     print(str(message))
