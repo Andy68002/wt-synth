@@ -219,7 +219,7 @@
       6.0,
       7.0,
       8.0,
-      9.0,
+      9.0
     ],
     "harmonic_attenuate1": [
       0.78,
@@ -233,7 +233,7 @@
       0.01
     ]
   },
-  "Piano (10 harmonics)": {
+  "Piano 10": {
       "attenuationvector1": 1,
       "num_harmonics1": 10,
       "midiValue": 72,
@@ -262,7 +262,7 @@
         0.01774585 
       ]
   },
-  "Piano (20 harmonics)": {
+  "Piano 20": {
       "attenuationvector1": 1,
       "num_harmonics1": 10,
       "midiValue": 74,
