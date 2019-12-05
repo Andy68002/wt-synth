@@ -19,18 +19,13 @@ enum note_state
 //Data structures
 typedef struct
 {
-	//Cutoff values (number of samples)
-    int A_cutoff;
-    int D_cutoff;
-    int S_cutoff;
-    int R_cutoff;
-
+	float attack_level;
+	float attack_speed;
+	float decay_level;
+	float decay_speed;
 	float sustain_level;
-
-    //attenuation calculation values
-    float A_lerp_mult;
-    float D_lerp_mult;
-    float R_lerp_mult;
+	float sustain_speed;
+	float release_speed;
 } Envelope;
 typedef struct
 {
