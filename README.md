@@ -41,7 +41,7 @@ _Gitcloning_ will prompt you to download Github Desktop if you haven't already. 
 Additionally, if you wish to simply download a ZIP of the project code, you can click that same green "Clone or Download" button and select "Download ZIP". 
 
 When doing this from the terminal of the Pi, the command: 
-`git clone [http address of source code]` 
+`git clone https://github.com/Andy68002/wt-synth.git` 
 will download the code into the current directory you are in. 
 
 3. Install ALSA Asoundlib
